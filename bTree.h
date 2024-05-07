@@ -1,16 +1,18 @@
 #ifndef BTree_H
 #define BTree_H
-
+#include "stdlib.h"
+#include "stdio.h"
+#include "time.h"
 
 typedef struct Node {
     int value;
-    int time;
+    time_t  time;
     struct Node* left;
     struct Node* right;
 } Node;
 
 // Create a new tree node
-Node* createNode(int value, int time);
+void createNode(Node* node, int value);
 
 // Insert a node into the tree
 Node* insertNode(Node* root, int value, int time);
