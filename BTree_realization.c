@@ -62,13 +62,20 @@ Node* deleteNode(Node* root, int value) {
     return root;
 }
 
-Node* searchNode(Node* root, int value) {
-    if (root == NULL || root->value == value) {
+Node* searchNode(Node* root, int key) {
+    if (root == NULL || root->key == key) {
         return root;
     }
-    if (value < root->value) {
-        return searchNode(root->left, value);
+    if (key < root->key) {
+        return searchNode(root->left, key);
     }
-    return searchNode(root->right, value);
+    return searchNode(root->right, key);
 }
 
+void printInOrder(Node* root) {
+    if (root != NULL) {
+        printInOrder(root->left);
+        printf("Key: %d, Value: %d, Time: %lld\n", root->key, root->value, (long long)root->time);
+        printInOrder(root->right);
+    }
+}
