@@ -5,6 +5,7 @@
 #include "time.h"
 
 typedef struct Node {
+    int key;
     int value;
     time_t  time;
     struct Node* left;

@@ -1,36 +1,74 @@
 #include "BTree.h"
 
 
-void createNode(Node* node,int value) {
-	Node* node = (Node*)malloc(sizeof(Node));
-	if (node != NULL) {
-		node->value = value;
-		node->time = time(NULL);
-		node->left = NULL;
-		node->right = NULL;
-	}
+void createNode(Node** node, int key, int value) {
+    *node = (Node*)malloc(sizeof(Node));
+    if (*node != NULL) {
+        (*node)->key = key;
+        (*node)->value = value;
+        (*node)->time = time(NULL);
+        (*node)->left = NULL;
+        (*node)->right = NULL;
+    }
+    else {
+        fprintf(stderr, "Memory allocation error.\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
-Node* insertNode(Node* root, int value, int time) {
+
+Node* insertNode(Node* root, int key, int value, int time) {
     if (root == NULL) {
-        Node* newNode = (Node*)malloc(sizeof(Node));
-        if (newNode != NULL) {
-            newNode->value = value;
-            newNode->time = time;
-            newNode->left = NULL;
-            newNode->right = NULL;
-            return newNode;
-        }
-        else {
-            fprintf(stderr, "Memory allocation error.\n");
-            exit(EXIT_FAILURE);
-        }
+        createNode(&root, key, value);
+        return root;
     }
-    if (value < root->value) {
-        root->left = insertNode(root->left, value, time);
+    if (key < root->key) {
+        root->left = insertNode(root->left, key, value, time);
     }
-    else if (value > root->value) {
-        root->right = insertNode(root->right, value, time);
+    else if (key > root->key) {
+        root->right = insertNode(root->right, key, value, time);
     }
     return root;
 }
+
+
+
+Node* deleteNode(Node* root, int value) {
+    if (root == NULL) {
+        return root;
+    }
+    if (value < root->value) {
+        root->left = deleteNode(root->left, value);
+    }
+    else if (value > root->value) {
+        root->right = deleteNode(root->right, value);
+    }
+    else {
+        if (root->left == NULL) {
+            Node* temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL) {
+            Node* temp = root->left;
+            free(root);
+            return temp;
+        }
+        Node* temp = minValueNode(root->right);
+        root->value = temp->value;
+        root->time = temp->time;
+        root->right = deleteNode(root->right, temp->value);
+    }
+    return root;
+}
+
+Node* searchNode(Node* root, int value) {
+    if (root == NULL || root->value == value) {
+        return root;
+    }
+    if (value < root->value) {
+        return searchNode(root->left, value);
+    }
+    return searchNode(root->right, value);
+}
+
