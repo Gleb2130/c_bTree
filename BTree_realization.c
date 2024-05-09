@@ -123,3 +123,11 @@ void deleteBNode(BTree* btree, int key) {
     btree->root = deleteNode(btree->root, key);
     btree->count--;
 }
+
+Node* searchBNode(BTree* btree, int key) {
+    if (btree == NULL) {
+        fprintf(stderr, "Invalid BTree.\n");
+        exit(EXIT_FAILURE);
+    }
+    return searchNode(btree->root, key);
+}
