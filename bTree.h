@@ -30,10 +30,27 @@ void printInOrder(Node* root);
 // Freeing memory occupied by tree nodes
 void freeTree(Node* root);
 
-
 typedef struct BTree {
     Node* root;
-} Btree;
+    int count;
+} BTree;
 
+// Creating a new tree
+BTree* createBTree();
+
+// Insert a node into the tree
+void insertBNode(BTree* btree, int key, int value, int time);
+
+// Removing a node from the tree
+void deleteBNode(BTree* btree, int key);
+
+// Search for a node in the tree by key
+Node* searchBNode(BTree* btree, int key);
+
+// Print node values in ascending key order
+void printBInOrder(BTree* btree);
+
+// Freeing the memory occupied by the tree
+void freeBTree(BTree* btree);
 
 #endif 
