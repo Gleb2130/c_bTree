@@ -87,3 +87,21 @@ void freeTree(Node* root) {
         free(root);
     }
 }
+
+
+
+////BTree
+
+
+BTree* createBTree() {
+    BTree* btree = (BTree*)malloc(sizeof(BTree));
+    if (btree != NULL) {
+        btree->root = NULL;
+        btree->count = 0;
+        return btree;
+    }
+    else {
+        fprintf(stderr, "Memory allocation error.\n");
+        exit(EXIT_FAILURE);
+    }
+}
