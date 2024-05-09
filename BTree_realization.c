@@ -105,3 +105,12 @@ BTree* createBTree() {
         exit(EXIT_FAILURE);
     }
 }
+
+void insertBNode(BTree* btree, int key, int value, int time) {
+    if (btree == NULL) {
+        fprintf(stderr, "Invalid BTree.\n");
+        exit(EXIT_FAILURE);
+    }
+    btree->root = insertNode(btree->root, key, value, time);
+    btree->count++;
+}
