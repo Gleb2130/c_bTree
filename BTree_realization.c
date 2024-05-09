@@ -131,3 +131,21 @@ Node* searchBNode(BTree* btree, int key) {
     }
     return searchNode(btree->root, key);
 }
+
+void printBInOrder(BTree* btree) {
+    if (btree == NULL) {
+        fprintf(stderr, "Invalid BTree.\n");
+        exit(EXIT_FAILURE);
+    }
+    printInOrder(btree->root);
+}
+
+void freeBTree(BTree* btree) {
+    if (btree != NULL) {
+        freeTree(btree->root);
+        free(btree);
+    }
+}
+
+//// BTree interval statistics 
+
