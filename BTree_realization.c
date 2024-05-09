@@ -79,3 +79,11 @@ void printInOrder(Node* root) {
         printInOrder(root->right);
     }
 }
+
+void freeTree(Node* root) {
+    if (root != NULL) {
+        freeTree(root->left);
+        freeTree(root->right);
+        free(root);
+    }
+}
