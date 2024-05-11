@@ -31,12 +31,12 @@ int main() {
     printf("Enter value or key:");
     scanf("%d", &searchKeyValue);
 
-    char choise = 0;
+    int choise = 0;
     
     do {
         printf("Enter:\n1 <- value\n2 <- key\n");
         scanf("%d", &choise);
-    } while (choise < 1 || choise>2);
+    } while (choise < 1 || choise > 2);
 
     Node* searchedNode = NULL;
 
@@ -69,7 +69,7 @@ int main() {
     performOperationsAndPrintResult(btree);
     printf("\n");
 
-    // Free the memory occupied by the tree
+    //Free the memory occupied by the tree
     freeBTree(btree);
 
     return 0;
