@@ -54,6 +54,24 @@ void printBInOrder(BTree* btree);
 void freeBTree(BTree* btree);
 
 
+typedef struct TimeIntervalData {
+    int sum;        // Sum of values in the interval
+    int min;        // Minimum value in the interval
+    int max;        // Maximum value in the interval
+    int count;      // Number of values in the interval
+} TimeIntervalData;
 
+
+// Function for traversing the tree and calculating the sum, minimum and maximum values in the specified time interval
+void calculateTimeIntervalData(Node* root, TimeIntervalData* intervalData, time_t t1, time_t t2);
+
+// Function for calculating the average value in the specified time interval
+double calculateTimeIntervalAverage(Node* root, time_t t1, time_t t2);
+
+// Function for calculating the minimum value in the specified time interval
+int calculateTimeIntervalMinimum(Node* root, time_t t1, time_t t2);
+
+// Function for calculating the maximum value in the specified time interval
+int calculateTimeIntervalMaximum(Node* root, time_t t1, time_t t2);
 
 #endif 
