@@ -17,19 +17,21 @@ void createNode(Node** node, int key, int value) {
 }
 
 
-Node* insertNode(Node* root, int key, int value, int time) {
+Node* insertNode(Node* root, int key, int value) {
     if (root == NULL) {
         createNode(&root, key, value);
         return root;
     }
     if (key < root->key) {
-        root->left = insertNode(root->left, key, value, time);
+        root->left = insertNode(root->left, key, value);
     }
     else if (key > root->key) {
-        root->right = insertNode(root->right, key, value, time);
+        root->right = insertNode(root->right, key, value);
     }
+    root->time = time(NULL);
     return root;
 }
+
 
 
 
@@ -186,4 +188,24 @@ int calculateTimeIntervalMaximum(Node* root, time_t t1, time_t t2) {
     TimeIntervalData intervalData = { 0, INT_MAX, INT_MIN, 0 };
     calculateTimeIntervalData(root, &intervalData, t1, t2);
     return (intervalData.count > 0) ? intervalData.max : 0;
+}
+
+void performOperationsAndPrintResult(BTree* btree) {
+    if (btree == NULL) {
+        fprintf(stderr, "Invalid BTree.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    time_t t1, t2;
+    printf("Enter start time (in seconds since epoch): ");
+    scanf("%lld", (long long*)&t1);
+    printf("Enter end time (in seconds since epoch): ");
+    scanf("%lld", (long long*)&t2);
+
+    TimeIntervalData intervalData = { 0, INT_MAX, INT_MIN, 0 };
+    calculateTimeIntervalData(btree->root, &intervalData, t1, t2);
+
+    printf("Average: %.2f\n", (double)intervalData.sum / intervalData.count);
+    printf("Minimum: %d\n", intervalData.min);
+    printf("Maximum: %d\n", intervalData.max);
 }

@@ -16,7 +16,7 @@ typedef struct Node {
 void createNode(Node* node, int value);
 
 // Insert a node into the tree
-Node* insertNode(Node* root, int value, int time);
+Node* insertNode(Node* root, int value);
 
 // Removing a node from the tree
 Node* deleteNode(Node* root, int value);
@@ -73,5 +73,8 @@ int calculateTimeIntervalMinimum(Node* root, time_t t1, time_t t2);
 
 // Function for calculating the maximum value in the specified time interval
 int calculateTimeIntervalMaximum(Node* root, time_t t1, time_t t2);
+
+// Function for performing operations on a tree in a specified time interval and outputting the results
+void performOperationsAndPrintResult(BTree* btree);
 
 #endif 
