@@ -174,3 +174,16 @@ double calculateTimeIntervalAverage(Node* root, time_t t1, time_t t2) {
         return 0.0; 
     }
 }
+
+
+int calculateTimeIntervalMinimum(Node* root, time_t t1, time_t t2) {
+    TimeIntervalData intervalData = { 0, INT_MAX, INT_MIN, 0 };
+    calculateTimeIntervalData(root, &intervalData, t1, t2);
+    return (intervalData.count > 0) ? intervalData.min : 0;
+}
+
+int calculateTimeIntervalMaximum(Node* root, time_t t1, time_t t2) {
+    TimeIntervalData intervalData = { 0, INT_MAX, INT_MIN, 0 };
+    calculateTimeIntervalData(root, &intervalData, t1, t2);
+    return (intervalData.count > 0) ? intervalData.max : 0;
+}
