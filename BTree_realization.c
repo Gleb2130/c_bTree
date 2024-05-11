@@ -163,3 +163,14 @@ void calculateTimeIntervalData(Node* root, TimeIntervalData* intervalData, time_
     }
     calculateTimeIntervalData(root->right, intervalData, t1, t2);
 }
+
+double calculateTimeIntervalAverage(Node* root, time_t t1, time_t t2) {
+    TimeIntervalData intervalData = { 0, INT_MAX, INT_MIN, 0 }; 
+    calculateTimeIntervalData(root, &intervalData, t1, t2); 
+    if (intervalData.count > 0) {
+        return (double)intervalData.sum / intervalData.count;
+    }
+    else {
+        return 0.0; 
+    }
+}
