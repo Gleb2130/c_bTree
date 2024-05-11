@@ -10,31 +10,46 @@ void printFormattedTime(time_t timestamp) {
     strftime(buffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
     printf("%s\n", buffer);
 }
-time_t convertTimeStringToSeconds(const char* timeString) {
-    int hours, minutes, seconds;
-    char* token;
-    time_t totalSeconds = 0;
-    token = strtok((char*)timeString, ":");
-    if (token == NULL) {
-        return -1;
-    }
-    hours = atoi(token);
+time_t convertTimeStringToSeconds() {
+    int year, month, day, hour, minute, second;
 
-    token = strtok(NULL, ":");
-    if (token == NULL) {
-        return -1;
-    }
-    minutes = atoi(token);
+    printf("Enter year: ");
+    scanf("%d", &year);
 
-    token = strtok(NULL, ":");
-    if (token == NULL) {
-        return -1;
-    }
-    seconds = atoi(token);
-    totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    printf("Enter month: ");
+    scanf("%d", &month);
 
-    return totalSeconds;
+    printf("Enter day: ");
+    scanf("%d", &day);
+
+    printf("Enter hour: ");
+    scanf("%d", &hour);
+
+    printf("Enter minute: ");
+    scanf("%d", &minute);
+
+    printf("Enter second: ");
+    scanf("%d", &second);
+
+    struct tm tm;
+    memset(&tm, 0, sizeof(struct tm));
+
+    tm.tm_year = year - 1900;
+    tm.tm_mon = month - 1;
+    tm.tm_mday = day;
+    tm.tm_hour = hour;
+    tm.tm_min = minute;
+    tm.tm_sec = second;
+
+    time_t t = mktime(&tm);
+    if (t == -1) {
+        fprintf(stderr, "Failed to convert time.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    return t;
 }
+
 
 
 
@@ -267,17 +282,13 @@ void performOperationsAndPrintResult(BTree* btree) {
         exit(EXIT_FAILURE);
     }
 
-    char startTimeString[10];
-    char endTimeString[10]; 
     time_t t1, t2;
 
-    printf("Enter start time (HH:MM:SS): ");
-    scanf("%s", startTimeString);
-    t1 = convertTimeStringToSeconds(startTimeString);
+    printf("Enter start date: ");
+    t1 = convertTimeStringToSeconds();
 
-    printf("Enter end time (HH:MM:SS): ");
-    scanf("%s", endTimeString);
-    t2 = convertTimeStringToSeconds(endTimeString);
+    printf("Enter end date: ");
+    t2 = convertTimeStringToSeconds();
 
     TimeIntervalData intervalData = { 0, INT_MAX, INT_MIN, 0 };
     calculateTimeIntervalData(btree->root, &intervalData, t1, t2);

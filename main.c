@@ -41,8 +41,8 @@ int main() {
     Node* searchedNode = NULL;
 
     switch (choise) {
-    case 1: searchedNode = searchBNode(btree, searchKeyValue); break;
-    case 2: searchedNode = searchBNodeValue(btree, searchKeyValue); break;
+    case 1: searchedNode = searchBNodeValue(btree, searchKeyValue); break;
+    case 2: searchedNode = searchBNode(btree, searchKeyValue); break;
     }
 
     if (searchedNode != NULL) {
