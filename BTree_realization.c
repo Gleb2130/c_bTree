@@ -1,4 +1,5 @@
 #include "BTree.h"
+#pragma warning(disable:4996)
 
 
 void createNode(Node** node, int key, int value) {
@@ -32,18 +33,33 @@ Node* insertNode(Node* root, int key, int value) {
     return root;
 }
 
+void editNode(Node* root, int key, int newValue) {
+    Node* nodeToUpdate = searchNode(root, key);
+    if (nodeToUpdate != NULL) {
+        nodeToUpdate->value = newValue;
+    }
+    else {
+        fprintf(stderr, "Node with key %d not found.\n", key);
+    }
+}
 
 
-
-Node* deleteNode(Node* root, int value) {
+Node* minValueNode(Node* node) {
+    Node* current = node;
+    while (current && current->left != NULL) {
+        current = current->left;
+    }
+    return current;
+}
+Node* deleteNode(Node* root, int key) {
     if (root == NULL) {
         return root;
     }
-    if (value < root->value) {
-        root->left = deleteNode(root->left, value);
+    if (key < root->key) {
+        root->left = deleteNode(root->left, key);
     }
-    else if (value > root->value) {
-        root->right = deleteNode(root->right, value);
+    else if (key > root->key) {
+        root->right = deleteNode(root->right, key);
     }
     else {
         if (root->left == NULL) {
@@ -108,12 +124,12 @@ BTree* createBTree() {
     }
 }
 
-void insertBNode(BTree* btree, int key, int value, int time) {
+void insertBNode(BTree* btree, int key, int value) {
     if (btree == NULL) {
         fprintf(stderr, "Invalid BTree.\n");
         exit(EXIT_FAILURE);
     }
-    btree->root = insertNode(btree->root, key, value, time);
+    btree->root = insertNode(btree->root, key, value);
     btree->count++;
 }
 

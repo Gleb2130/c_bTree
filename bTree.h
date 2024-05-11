@@ -13,16 +13,19 @@ typedef struct Node {
 } Node;
 
 // Create a new tree node
-void createNode(Node* node, int value);
+void createNode(Node** node, int key, int value);
 
 // Insert a node into the tree
-Node* insertNode(Node* root, int value);
+Node* insertNode(Node* root, int key, int value);
+
+// Edit node 
+void editNode(Node* root, int key, int newValue);
 
 // Removing a node from the tree
-Node* deleteNode(Node* root, int value);
+Node* deleteNode(Node* root, int key);
 
 // Search for a node in the tree by value
-Node* searchNode(Node* root, int value);
+Node* searchNode(Node* root, int key);
 
 // Print all nodes of the tree in ascending order
 void printInOrder(Node* root);
@@ -39,7 +42,7 @@ typedef struct BTree {
 BTree* createBTree();
 
 // Insert a node into the tree
-void insertBNode(BTree* btree, int key, int value, int time);
+void insertBNode(BTree* btree, int key, int value);
 
 // Removing a node from the tree
 void deleteBNode(BTree* btree, int key);
