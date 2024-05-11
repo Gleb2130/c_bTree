@@ -27,6 +27,9 @@ Node* deleteNode(Node* root, int key);
 // Search for a node in the tree by value
 Node* searchNode(Node* root, int key);
 
+// Search for a node in the tree by value
+Node* searchNodeValue(Node* root, int value);
+
 // Print all nodes of the tree in ascending order
 void printInOrder(Node* root);
 
@@ -49,6 +52,9 @@ void deleteBNode(BTree* btree, int key);
 
 // Search for a node in the tree by key
 Node* searchBNode(BTree* btree, int key);
+
+// Search for a node in the tree by key
+Node* searchBNodeValue(BTree* btree, int value);
 
 // Print node values in ascending key order
 void printBInOrder(BTree* btree);

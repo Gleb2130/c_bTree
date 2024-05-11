@@ -90,6 +90,16 @@ Node* searchNode(Node* root, int key) {
     return searchNode(root->right, key);
 }
 
+Node* searchNodeValue(Node* root, int value) {
+    if (root == NULL || root->value == value) {
+        return root;
+    }
+    if (value < root->value) {
+        return searchNode(root->left, value);
+    }
+    return searchNode(root->right, value);
+}
+
 void printInOrder(Node* root) {
     if (root != NULL) {
         printInOrder(root->left);
@@ -148,6 +158,14 @@ Node* searchBNode(BTree* btree, int key) {
         exit(EXIT_FAILURE);
     }
     return searchNode(btree->root, key);
+}
+
+Node* searchBNodeValue(BTree* btree, int value) {
+    if (btree == NULL) {
+        fprintf(stderr, "Invalid BTree.\n");
+        exit(EXIT_FAILURE);
+    }
+    return searchNode(btree->root, value);
 }
 
 void printBInOrder(BTree* btree) {
