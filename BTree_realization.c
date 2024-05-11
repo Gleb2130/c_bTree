@@ -149,3 +149,17 @@ void freeBTree(BTree* btree) {
 
 //// BTree interval statistics 
 
+void calculateTimeIntervalData(Node* root, TimeIntervalData* intervalData, time_t t1, time_t t2) {
+    if (root == NULL) {
+        return;
+    }
+
+    calculateTimeIntervalData(root->left, intervalData, t1, t2);
+    if (root->time >= t1 && root->time <= t2) {
+        intervalData->sum += root->value;
+        intervalData->min = (intervalData->min > root->value) ? root->value : intervalData->min;
+        intervalData->max = (intervalData->max < root->value) ? root->value : intervalData->max;
+        intervalData->count++;
+    }
+    calculateTimeIntervalData(root->right, intervalData, t1, t2);
+}
