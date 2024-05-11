@@ -1,6 +1,42 @@
 #include "BTree.h"
 #pragma warning(disable:4996)
 
+void printFormattedTime(time_t timestamp) {
+    struct tm* tm_info;
+    char buffer[26];
+
+    tm_info = localtime(&timestamp);
+
+    strftime(buffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
+    printf("%s\n", buffer);
+}
+time_t convertTimeStringToSeconds(const char* timeString) {
+    int hours, minutes, seconds;
+    char* token;
+    time_t totalSeconds = 0;
+    token = strtok((char*)timeString, ":");
+    if (token == NULL) {
+        return -1;
+    }
+    hours = atoi(token);
+
+    token = strtok(NULL, ":");
+    if (token == NULL) {
+        return -1;
+    }
+    minutes = atoi(token);
+
+    token = strtok(NULL, ":");
+    if (token == NULL) {
+        return -1;
+    }
+    seconds = atoi(token);
+    totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+    return totalSeconds;
+}
+
+
 
 void createNode(Node** node, int key, int value) {
     *node = (Node*)malloc(sizeof(Node));
@@ -103,7 +139,8 @@ Node* searchNodeValue(Node* root, int value) {
 void printInOrder(Node* root) {
     if (root != NULL) {
         printInOrder(root->left);
-        printf("Key: %d, Value: %d, Time: %lld\n", root->key, root->value, (long long)root->time);
+        printf("Key: %d, Value: %d, Time: ", root->key, root->value);
+        printFormattedTime(root->time);
         printInOrder(root->right);
     }
 }
@@ -230,11 +267,17 @@ void performOperationsAndPrintResult(BTree* btree) {
         exit(EXIT_FAILURE);
     }
 
+    char startTimeString[10];
+    char endTimeString[10]; 
     time_t t1, t2;
-    printf("Enter start time (in seconds since epoch): ");
-    scanf("%lld", (long long*)&t1);
-    printf("Enter end time (in seconds since epoch): ");
-    scanf("%lld", (long long*)&t2);
+
+    printf("Enter start time (HH:MM:SS): ");
+    scanf("%s", startTimeString);
+    t1 = convertTimeStringToSeconds(startTimeString);
+
+    printf("Enter end time (HH:MM:SS): ");
+    scanf("%s", endTimeString);
+    t2 = convertTimeStringToSeconds(endTimeString);
 
     TimeIntervalData intervalData = { 0, INT_MAX, INT_MIN, 0 };
     calculateTimeIntervalData(btree->root, &intervalData, t1, t2);

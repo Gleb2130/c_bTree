@@ -3,6 +3,8 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "time.h"
+#include "string.h"
+
 
 typedef struct Node {
     int key;
