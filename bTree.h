@@ -1,35 +1,37 @@
 #ifndef BTree_H
 #define BTree_H
+
 #include "stdlib.h"
 #include "stdio.h"
 #include "time.h"
 #include "string.h"
 
-
 typedef struct Node {
-    int key;
+    time_t time; 
     int value;
-    time_t  time;
     struct Node* left;
     struct Node* right;
+
+    int subtreeSum;
+    int subtreeMin;
+    int subtreeMax;
+    int subtreeCount;
 } Node;
 
 // Create a new tree node
-void createNode(Node** node, int key, int value);
+void createNode(Node** node, time_t time, int value);
 
 // Insert a node into the tree
-Node* insertNode(Node* root, int key, int value);
+Node* insertNode(Node* root, time_t time, int value);
 
-// Edit node 
-void editNode(Node* root, int key, int newValue);
+// Edit node
+void editNode(Node* root, time_t time, int newValue);
 
 // Removing a node from the tree
-Node* deleteNode(Node* root, int key);
+Node* deleteNode(Node* root, time_t time);
 
 // Search for a node in the tree by value
-Node* searchNode(Node* root, int key);
-
-// Search for a node in the tree by value
+Node* searchNode(Node* root, time_t time);
 Node* searchNodeValue(Node* root, int value);
 
 // Print all nodes of the tree in ascending order
@@ -47,18 +49,16 @@ typedef struct BTree {
 BTree* createBTree();
 
 // Insert a node into the tree
-void insertBNode(BTree* btree, int key, int value);
+void insertBNode(BTree* btree, time_t time, int value);
 
 // Removing a node from the tree
-void deleteBNode(BTree* btree, int key);
+void deleteBNode(BTree* btree, time_t time);
 
-// Search for a node in the tree by key
-Node* searchBNode(BTree* btree, int key);
-
-// Search for a node in the tree by key
+// Search for a node in the tree by value
+Node* searchBNode(BTree* btree, time_t time);
 Node* searchBNodeValue(BTree* btree, int value);
 
-// Print node values in ascending key order
+// Print node values in ascending order
 void printBInOrder(BTree* btree);
 
 // Freeing the memory occupied by the tree
@@ -88,4 +88,4 @@ int calculateTimeIntervalMaximum(Node* root, time_t t1, time_t t2);
 // Function for performing operations on a tree in a specified time interval and outputting the results
 void performOperationsAndPrintResult(BTree* btree);
 
-#endif 
+#endif /* BTree_H */
