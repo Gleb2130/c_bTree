@@ -51,12 +51,12 @@ void createNode(Node** node, time_t time, int value) {
         (*node)->subtreeMin = value;
         (*node)->subtreeMax = value;
         (*node)->subtreeCount = 1;
-    }
-    else {
+    } else {
         fprintf(stderr, "Memory allocation error.\n");
         exit(EXIT_FAILURE);
     }
 }
+
 
 void updateSubtreeInfo(Node* node) {
     if (node == NULL) return;
@@ -89,7 +89,18 @@ Node* insertNode(Node* root, time_t time, int value) {
     else if (time > root->time) {
         root->right = insertNode(root->right, time, value);
     }
-    updateSubtreeInfo(root);
+    root->subtreeSum = root->value +
+        (root->left ? root->left->subtreeSum : 0) +
+        (root->right ? root->right->subtreeSum : 0);
+    root->subtreeMin = root->value;
+    if (root->left) root->subtreeMin = (root->subtreeMin < root->left->subtreeMin) ? root->subtreeMin : root->left->subtreeMin;
+    if (root->right) root->subtreeMin = (root->subtreeMin < root->right->subtreeMin) ? root->subtreeMin : root->right->subtreeMin;
+    root->subtreeMax = root->value;
+    if (root->left) root->subtreeMax = (root->subtreeMax > root->left->subtreeMax) ? root->subtreeMax : root->left->subtreeMax;
+    if (root->right) root->subtreeMax = (root->subtreeMax > root->right->subtreeMax) ? root->subtreeMax : root->right->subtreeMax;
+    root->subtreeCount = 1 +
+        (root->left ? root->left->subtreeCount : 0) +
+        (root->right ? root->right->subtreeCount : 0);
     return root;
 }
 
@@ -104,7 +115,7 @@ void editNode(Node* root, time_t time, int newValue) {
     }
 }
 
-Node* findMinValueNode(Node* root) {
+Node* minValueNode(Node* root) {
     Node* current = root;
     while (current && current->left != NULL) {
         current = current->left;
@@ -113,7 +124,9 @@ Node* findMinValueNode(Node* root) {
 }
 
 Node* deleteNode(Node* root, time_t time) {
-    if (root == NULL) return root;
+    if (root == NULL) {
+        return root;
+    }
     if (time < root->time) {
         root->left = deleteNode(root->left, time);
     }
@@ -131,14 +144,26 @@ Node* deleteNode(Node* root, time_t time) {
             free(root);
             return temp;
         }
-        Node* temp = findMinValueNode(root->right);
+        Node* temp = minValueNode(root->right);
         root->time = temp->time;
         root->value = temp->value;
         root->right = deleteNode(root->right, temp->time);
     }
-    updateSubtreeInfo(root);
+    root->subtreeSum = root->value +
+        (root->left ? root->left->subtreeSum : 0) +
+        (root->right ? root->right->subtreeSum : 0);
+    root->subtreeMin = root->value;
+    if (root->left) root->subtreeMin = (root->subtreeMin < root->left->subtreeMin) ? root->subtreeMin : root->left->subtreeMin;
+    if (root->right) root->subtreeMin = (root->subtreeMin < root->right->subtreeMin) ? root->subtreeMin : root->right->subtreeMin;
+    root->subtreeMax = root->value;
+    if (root->left) root->subtreeMax = (root->subtreeMax > root->left->subtreeMax) ? root->subtreeMax : root->left->subtreeMax;
+    if (root->right) root->subtreeMax = (root->subtreeMax > root->right->subtreeMax) ? root->subtreeMax : root->right->subtreeMax;
+    root->subtreeCount = 1 +
+        (root->left ? root->left->subtreeCount : 0) +
+        (root->right ? root->right->subtreeCount : 0);
     return root;
 }
+
 
 Node* searchNode(Node* root, time_t time) {
     if (root == NULL || root->time == time) {
@@ -196,14 +221,24 @@ BTree* createBTree() {
 }
 
 void insertBNode(BTree* btree, time_t time, int value) {
+    if (btree == NULL) {
+        fprintf(stderr, "Invalid BTree.\n");
+        exit(EXIT_FAILURE);
+    }
     btree->root = insertNode(btree->root, time, value);
     btree->count++;
 }
 
+
 void deleteBNode(BTree* btree, time_t time) {
+    if (btree == NULL) {
+        fprintf(stderr, "Invalid BTree.\n");
+        exit(EXIT_FAILURE);
+    }
     btree->root = deleteNode(btree->root, time);
     btree->count--;
 }
+
 
 Node* searchBNode(BTree* btree, time_t time) {
     return searchNode(btree->root, time);
@@ -223,16 +258,26 @@ void freeBTree(BTree* btree) {
 }
 
 void calculateTimeIntervalData(Node* root, TimeIntervalData* intervalData, time_t t1, time_t t2) {
-    if (root == NULL) return;
+    if (root == NULL) {
+        return;
+    }
+
     if (root->time >= t1 && root->time <= t2) {
         intervalData->sum += root->value;
-        if (root->value < intervalData->min) intervalData->min = root->value;
-        if (root->value > intervalData->max) intervalData->max = root->value;
+        intervalData->min = (intervalData->min > root->value) ? root->value : intervalData->min;
+        intervalData->max = (intervalData->max < root->value) ? root->value : intervalData->max;
         intervalData->count++;
     }
-    if (root->time > t1) calculateTimeIntervalData(root->left, intervalData, t1, t2);
-    if (root->time < t2) calculateTimeIntervalData(root->right, intervalData, t1, t2);
+
+    if (root->left && root->left->subtreeMax >= t1) {
+        calculateTimeIntervalData(root->left, intervalData, t1, t2);
+    }
+
+    if (root->right && root->right->subtreeMin <= t2) {
+        calculateTimeIntervalData(root->right, intervalData, t1, t2);
+    }
 }
+
 
 double calculateTimeIntervalAverage(Node* root, time_t t1, time_t t2) {
     TimeIntervalData intervalData = { 0, INT_MAX, INT_MIN, 0 };
@@ -253,17 +298,24 @@ int calculateTimeIntervalMaximum(Node* root, time_t t1, time_t t2) {
 }
 
 void performOperationsAndPrintResult(BTree* btree) {
+    if (btree == NULL || btree->root == NULL) {
+        printf("The tree is empty.\n");
+        return;
+    }
+
     time_t t1, t2;
-    printf("Enter start time (timestamp): ");
+    printf("Enter start of time interval (timestamp): ");
     scanf("%ld", &t1);
-    printf("Enter end time (timestamp): ");
+    printf("Enter end of time interval (timestamp): ");
     scanf("%ld", &t2);
 
     double average = calculateTimeIntervalAverage(btree->root, t1, t2);
-    int minimum = calculateTimeIntervalMinimum(btree->root, t1, t2);
-    int maximum = calculateTimeIntervalMaximum(btree->root, t1, t2);
+    int min = calculateTimeIntervalMinimum(btree->root, t1, t2);
+    int max = calculateTimeIntervalMaximum(btree->root, t1, t2);
 
-    printf("Average value: %.2f\n", average);
-    printf("Minimum value: %d\n", minimum);
-    printf("Maximum value: %d\n", maximum);
+    printf("For the time interval [%ld, %ld]:\n", t1, t2);
+    printf("Average: %.2f\n", average);
+    printf("Minimum: %d\n", min);
+    printf("Maximum: %d\n", max);
 }
+
