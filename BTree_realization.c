@@ -9,6 +9,7 @@ void printFormattedTime(time_t timestamp) {
     printf("%s\n", buffer);
 }
 
+
 time_t convertTimeStringToSeconds() {
     int year, month, day, hour, minute, second;
     printf("Enter year: ");
