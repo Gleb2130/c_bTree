@@ -14,6 +14,93 @@ This repository contains an implementation of a binary search tree (BTree) in C 
 
 The BTree implementation provides a simple binary search tree data structure with basic operations such as insertion, deletion, searching, and printing in order.
 
+### Inštrukcie na kompiláciu projektu
+
+<details>
+  <summary>Struktúra projektu</summary>
+  
+Uistite sa, že vaša štruktúra súborov vyzerá nasledovne:
+
+```
+project_directory/
+    main.c
+    BTree_realization.c
+    bTree.h
+    Makefile
+```
+</details>
+
+### Windows
+
+<details>
+  <summary>Pre kompiláciu projektu na Windows s použitím MinGW vykonajte nasledovné kroky:</summary>
+
+1. **Nainštalujte MinGW**:
+   - Stiahnite a nainštalujte MinGW z oficiálnej stránky: [MinGW-w64](https://osdn.net/projects/mingw/).
+   - Uistite sa, že máte nainštalované komponenty `mingw32-gcc-g++`, `mingw32-make` a ďalšie potrebné balíky.
+
+2. **Pridajte MinGW do PATH**:
+   - Otvorte "Ovládací panel" -> "Systém a bezpečnosť" -> "Systém" -> "Rozšírené nastavenia systému".
+   - V časti "Premenné prostredia" nájdite premennú `PATH` a pridajte cestu k adresáru `bin` MinGW (napr. `C:\MinGW\bin`).
+
+3. **Vytvorte Makefile**:
+   - Uistite sa, že Makefile sa nachádza v koreňovom adresári vášho projektu.
+
+4. **Skopilujte projekt**:
+   - Otvorte príkazový riadok (napr. `cmd` alebo PowerShell).
+   - Prejdite do adresára projektu:
+     ```sh
+     cd path\to\project_directory
+     ```
+   - Spustite príkaz:
+     ```sh
+     mingw32-make
+     ```
+   - Ak kompilácia prebehla úspešne, bude vytvorený spustiteľný súbor `btree_app.exe`.
+
+5. **Spustite spustiteľný súbor**:
+   - V tom istom príkazovom riadku vykonajte:
+     ```sh
+     btree_app.exe
+     ```
+
+</details>
+
+### Linux
+
+<details>
+  <summary>Pre kompiláciu projektu na Linux vykonajte nasledovné kroky:</summary>
+
+1. **Nainštalujte potrebné balíky**:
+   - Uistite sa, že máte nainštalovaný GCC a make. Môžete ich nainštalovať pomocou nasledujúceho príkazu:
+     ```sh
+     sudo apt-get update
+     sudo apt-get install build-essential
+     ```
+
+2. **Vytvorte Makefile**:
+   - Uistite sa, že Makefile sa nachádza v koreňovom adresári vášho projektu.
+
+3. **Skopilujte projekt**:
+   - Otvorte terminál.
+   - Prejdite do adresára projektu:
+     ```sh
+     cd path/to/project_directory
+     ```
+   - Spustite príkaz:
+     ```sh
+     make
+     ```
+   - Ak kompilácia prebehla úspešne, bude vytvorený spustiteľný súbor `btree_app`.
+
+4. **Spustite spustiteľný súbor**:
+   - V tom istom príkazovom riadku vykonajte:
+     ```sh
+     ./btree_app
+     ```
+
+</details>
+
 ## Features
 
 - Insertion of nodes with unique keys
